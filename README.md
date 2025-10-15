@@ -20,11 +20,17 @@ This is the **Day 1 setup** of the project — initial structure, placeholder pa
 
 ## 📂 Folder Structure
 feedflow/
+
 │
+
 ├── index.html # Home feed page
+
 ├── saved.html # Saved posts page
+
 ├── style.css # Base & humanized UI styles
+
 ├── script.js # Home page JS placeholder
+
 └── saved.js # Saved page JS placeholder
 
 
