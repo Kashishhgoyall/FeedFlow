@@ -1,4 +1,5 @@
 
+
 :root {
   --bg-light: #fdf6f0;
   --bg-dark: #1b1b2f;
@@ -17,14 +18,15 @@
 }
 
 body {
-  background: linear-gradient(160deg, #fdf6f0, #f0f7ff);
+  background: linear-gradient(160deg, #fdf6f0, #f0f7ff, #fff1f3);
+  background-size: 600% 600%;
+  animation: bgShift 15s ease infinite;
   color: var(--text-dark);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   transition: background 0.5s ease;
 }
-
 
 header {
   background: linear-gradient(90deg, #1b1b2f, #2c2c4a);
@@ -61,7 +63,6 @@ nav a:hover {
 main {
   flex: 1;
   padding: 30px 20px;
-  text-align: center;
   max-width: 1000px;
   margin: 0 auto;
 }
@@ -99,12 +100,6 @@ button:hover {
   100% { background-position: 0% 50%; }
 }
 
-body {
-  background: linear-gradient(160deg, #fdf6f0, #f0f7ff, #fff1f3);
-  background-size: 600% 600%;
-  animation: bgShift 15s ease infinite;
-}
-
 @media (max-width: 768px) {
   header {
     flex-direction: column;
@@ -123,4 +118,71 @@ body {
   main {
     padding: 20px 10px;
   }
+}
+
+
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  margin: 15px 0;
+  width: 100%;
+  max-width: 550px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  background: #fff8f8;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 14px 14px 0 0;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.card-content h3 {
+  margin: 0;
+  color: #222;
+  font-size: 1.1rem;
+}
+
+.card-content p {
+  font-size: 0.95rem;
+  margin-top: 8px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0 15px 0;
+}
+
+button {
+  padding: 7px 15px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  font-weight: 500;
+}
+
+button:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
 }
