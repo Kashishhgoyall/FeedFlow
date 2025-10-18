@@ -192,3 +192,23 @@ button:hover {
   background: var(--accent-hover);
   transform: scale(1.05);
 }
+.search-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#search {
+  width: 90%;
+  max-width: 500px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
