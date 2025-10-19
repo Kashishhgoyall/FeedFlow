@@ -5,28 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FeedFlow</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
   <header>
-    <h1>📰 FeedFlow</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="saved.html">Saved</a>
-    </nav>
+    <div class="logo"><i class="fa-solid fa-newspaper"></i> FeedFlow</div>
+    <div class="header-right">
+      <input type="text" id="search" placeholder="Search posts...">
+      <button id="login-btn"><i class="fa-solid fa-user"></i> Login</button>
+      <button id="signup-btn"><i class="fa-solid fa-user-plus"></i> Signup</button>
+      <a href="saved.html" class="saved-link"><i class="fa-solid fa-bookmark"></i> Saved</a>
+    </div>
   </header>
 
   <main>
-    <div class="search-container">
-  <input type="text" id="search" placeholder="Search posts...">
-</div>
-   <div class="feed" id="feed"></div>
-</main>
+    <div class="feed" id="feed"></div>
+  </main>
 
-<footer>
-  <p>© 2025 FeedFlow. All rights reserved.</p>
-</footer>
+  <footer>
+    <p>© 2025 FeedFlow | Follow us on 
+      <i class="fa-brands fa-twitter"></i> 
+      <i class="fa-brands fa-facebook"></i> 
+      <i class="fa-brands fa-instagram"></i>
+    </p>
+  </footer>
 
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
