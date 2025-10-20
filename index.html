@@ -11,9 +11,8 @@
   <header>
     <div class="logo"><i class="fa-solid fa-newspaper"></i> FeedFlow</div>
     <div class="header-right">
-      <input type="text" id="search" placeholder="Search posts...">
-      <button id="login-btn"><i class="fa-solid fa-user"></i> Login</button>
-      <button id="signup-btn"><i class="fa-solid fa-user-plus"></i> Signup</button>
+      <input type="text" id="search" placeholder="Search posts..." aria-label="Search posts">
+      <a href="#" id="add-post-header-btn" class="header-btn"><i class="fa-solid fa-plus"></i> Add Post</a>
       <a href="saved.html" class="saved-link"><i class="fa-solid fa-bookmark"></i> Saved</a>
     </div>
   </header>
@@ -29,6 +28,18 @@
       <i class="fa-brands fa-instagram"></i>
     </p>
   </footer>
+
+  <!-- Add Post Modal -->
+  <div id="add-post-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close">&times;</span>
+      <h3>Add New Post</h3>
+      <input type="text" id="new-title" placeholder="Post Title">
+      <textarea id="new-text" placeholder="Post Content"></textarea>
+      <input type="file" id="new-img" accept="image/*">
+      <button id="add-post-btn">Add Post</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
