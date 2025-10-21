@@ -77,29 +77,29 @@ feedflow/
 
 ## 📌 Highlights
 
-Clean glassmorphism header with blur and gradient effect
+- Clean glassmorphism header with blur and gradient effect
 
-Fully interactive modal for adding and editing posts
+- Fully interactive modal for adding and editing posts
 
-Smooth hover animations and transitions across UI
+- Smooth hover animations and transitions across UI
 
-Consistent button styles and alignment
+- Consistent button styles and alignment
 
-Feed auto-adjusts with screen width using CSS Grid & Flexbox
+- Feed auto-adjusts with screen width using CSS Grid & Flexbox
 
 ---
 
 ## 🧠 Concepts Used
 
-DOM Manipulation (createElement, appendChild, querySelector)
+- DOM Manipulation (createElement, appendChild, querySelector)
 
-Event Delegation for dynamic elements
+- Event Delegation for dynamic elements
 
-CRUD Operations with localStorage
+- CRUD Operations with localStorage
 
-Modular and Reusable JavaScript functions
+- Modular and Reusable JavaScript functions
 
-Responsive CSS Grid and Flexbox layouts
+- Responsive CSS Grid and Flexbox layouts
 
 ---
 

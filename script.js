@@ -21,11 +21,11 @@ const imageMap = {
   "tech": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=550&q=80",
   "food": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=550&q=80",
   "city": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=550&q=80",
-  "travel": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=550&q=80",
+  "travel": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=550&q=80"
 };
 
 function timeAgo(timestamp) {
-  const diff = Math.floor((Date.now() - timestamp) / 60000); 
+  const diff = Math.floor((Date.now() - timestamp) / 60000);
   if (diff < 1) return "Just now";
   if (diff < 60) return `${diff} minute(s) ago`;
   const hours = Math.floor(diff / 60);
@@ -45,8 +45,8 @@ function createCard(post) {
       <small class="timestamp">Posted ${timeAgo(post.timestamp)}</small>
       <p>${post.text}</p>
       <div class="buttons">
-        <button class="like-btn ${storedLikes[post.id] ? 'liked' : ''}">
-          ${storedLikes[post.id] ? '❤️ Liked' : '❤️ Like'}
+        <button class="like-btn ${storedLikes[post.title] ? 'liked' : ''}">
+          ${storedLikes[post.title] ? '❤️ Liked' : '❤️ Like'}
         </button>
         <button class="save-btn">${savedPosts.find(p => p.id === post.id) ? '💾 Saved' : '💾 Save'}</button>
         <button class="edit-btn">✏️ Edit</button>
@@ -64,19 +64,21 @@ function createCard(post) {
 
   img.onerror = () => img.src = "https://via.placeholder.com/550x300?text=Image+Not+Available";
 
+  
   likeBtn.addEventListener("click", () => {
     if (likeBtn.classList.contains("liked")) {
       likeBtn.classList.remove("liked");
       likeBtn.textContent = "❤️ Like";
-      delete storedLikes[post.id];
+      delete storedLikes[post.title];
     } else {
       likeBtn.classList.add("liked");
       likeBtn.textContent = "❤️ Liked";
-      storedLikes[post.id] = true;
+      storedLikes[post.title] = true;
     }
     localStorage.setItem("likes", JSON.stringify(storedLikes));
   });
 
+  
   saveBtn.addEventListener("click", () => {
     if (savedPosts.find(p => p.id === post.id)) {
       savedPosts = savedPosts.filter(p => p.id !== post.id);
@@ -88,6 +90,7 @@ function createCard(post) {
     localStorage.setItem("savedPosts", JSON.stringify(savedPosts));
   });
 
+  
   deleteBtn.addEventListener("click", () => {
     allPosts = allPosts.filter(p => p.id !== post.id);
     savedPosts = savedPosts.filter(p => p.id !== post.id);
@@ -96,6 +99,7 @@ function createCard(post) {
     renderPosts();
   });
 
+  
   editBtn.addEventListener("click", () => {
     editingPostId = post.id;
     modalTitle.textContent = "Edit Post";
@@ -109,6 +113,7 @@ function createCard(post) {
 
 function renderPosts() {
   feed.innerHTML = "";
+  storedLikes = JSON.parse(localStorage.getItem("likes")) || {}; // Refresh likes
   const filtered = allPosts.filter(post => post.title.toLowerCase().includes(currentQuery));
   if (filtered.length === 0) {
     const noPostsMsg = document.createElement("div");
@@ -145,7 +150,6 @@ searchInput.addEventListener("input", () => {
   renderPosts();
 });
 
-
 if (allPosts.length === 0) generatePosts();
 renderPosts();
 
@@ -169,8 +173,11 @@ addPostHeaderBtn.addEventListener("click", () => {
   postModal.style.display = "flex";
 });
 
+
 closeModal.addEventListener("click", () => postModal.style.display = "none");
-window.addEventListener("click", (e) => { if(e.target === postModal) postModal.style.display = "none"; });
+window.addEventListener("click", (e) => {
+  if (e.target === postModal) postModal.style.display = "none";
+});
 
 
 savePostBtn.addEventListener("click", () => {
@@ -183,7 +190,6 @@ savePostBtn.addEventListener("click", () => {
   if (file) imgURL = URL.createObjectURL(file);
 
   if (editingPostId) {
-  
     allPosts = allPosts.map(post => {
       if (post.id === editingPostId) {
         return { ...post, title, text, img: file ? imgURL : post.img };
@@ -198,4 +204,4 @@ savePostBtn.addEventListener("click", () => {
   localStorage.setItem("allPosts", JSON.stringify(allPosts));
   postModal.style.display = "none";
   renderPosts();
-});
+});  
