@@ -5,6 +5,16 @@ const searchInput = document.getElementById("search");
 let currentQuery = "";
 let storedLikes = JSON.parse(localStorage.getItem("likes")) || {};
 
+const postModal = document.getElementById("post-modal");
+const modalTitle = document.getElementById("modal-title");
+const postTitleInput = document.getElementById("post-title");
+const postTextInput = document.getElementById("post-text");
+const postImgInput = document.getElementById("post-img");
+const savePostBtn = document.getElementById("save-post-btn");
+const addPostHeaderBtn = document.getElementById("add-post-header-btn");
+const closeModal = document.getElementById("close-modal");
+
+let editingPostId = null; 
 
 const imageMap = {
   "nature": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=550&q=80",
@@ -14,6 +24,16 @@ const imageMap = {
   "travel": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=550&q=80",
 };
 
+function timeAgo(timestamp) {
+  const diff = Math.floor((Date.now() - timestamp) / 60000); 
+  if (diff < 1) return "Just now";
+  if (diff < 60) return `${diff} minute(s) ago`;
+  const hours = Math.floor(diff / 60);
+  if (hours < 24) return `${hours} hour(s) ago`;
+  const days = Math.floor(hours / 24);
+  return `${days} day(s) ago`;
+}
+
 function createCard(post) {
   const card = document.createElement("div");
   card.classList.add("card");
@@ -22,12 +42,14 @@ function createCard(post) {
     <img src="${post.img}" alt="Post Image">
     <div class="card-content">
       <h3>${post.title}</h3>
+      <small class="timestamp">Posted ${timeAgo(post.timestamp)}</small>
       <p>${post.text}</p>
       <div class="buttons">
         <button class="like-btn ${storedLikes[post.id] ? 'liked' : ''}">
           ${storedLikes[post.id] ? '❤️ Liked' : '❤️ Like'}
         </button>
         <button class="save-btn">${savedPosts.find(p => p.id === post.id) ? '💾 Saved' : '💾 Save'}</button>
+        <button class="edit-btn">✏️ Edit</button>
         <button class="delete-btn">🗑 Delete</button>
       </div>
     </div>
@@ -36,6 +58,7 @@ function createCard(post) {
 
   const likeBtn = card.querySelector(".like-btn");
   const saveBtn = card.querySelector(".save-btn");
+  const editBtn = card.querySelector(".edit-btn");
   const deleteBtn = card.querySelector(".delete-btn");
   const img = card.querySelector("img");
 
@@ -72,22 +95,16 @@ function createCard(post) {
     localStorage.setItem("savedPosts", JSON.stringify(savedPosts));
     renderPosts();
   });
-}
 
-function generatePosts(count = 6) {
-  const keywords = Object.keys(imageMap);
-  for (let i = 0; i < count; i++) {
-    const id = Date.now() + Math.floor(Math.random() * 1000);
-    const keyword = keywords[Math.floor(Math.random() * keywords.length)];
-    const post = {
-      id,
-      title: `${keyword.charAt(0).toUpperCase() + keyword.slice(1)} Post #${Math.floor(Math.random() * 500)}`,
-      text: "This is a sample post loaded dynamically to simulate a live feed experience.",
-      img: imageMap[keyword]
-    };
-    allPosts.push(post);
-  }
-  localStorage.setItem("allPosts", JSON.stringify(allPosts));
+  editBtn.addEventListener("click", () => {
+    editingPostId = post.id;
+    modalTitle.textContent = "Edit Post";
+    savePostBtn.textContent = "Save Changes";
+    postTitleInput.value = post.title;
+    postTextInput.value = post.text;
+    postImgInput.value = "";
+    postModal.style.display = "flex";
+  });
 }
 
 function renderPosts() {
@@ -106,10 +123,28 @@ function renderPosts() {
   }
 }
 
+function generatePosts(count = 6) {
+  const keywords = Object.keys(imageMap);
+  for (let i = 0; i < count; i++) {
+    const id = Date.now() + Math.floor(Math.random() * 1000);
+    const keyword = keywords[Math.floor(Math.random() * keywords.length)];
+    const post = {
+      id,
+      title: `${keyword.charAt(0).toUpperCase() + keyword.slice(1)} Post #${Math.floor(Math.random() * 500)}`,
+      text: "This is a sample post loaded dynamically to simulate a live feed experience.",
+      img: imageMap[keyword],
+      timestamp: Date.now()
+    };
+    allPosts.push(post);
+  }
+  localStorage.setItem("allPosts", JSON.stringify(allPosts));
+}
+
 searchInput.addEventListener("input", () => {
   currentQuery = searchInput.value.trim().toLowerCase();
   renderPosts();
 });
+
 
 if (allPosts.length === 0) generatePosts();
 renderPosts();
@@ -123,36 +158,44 @@ window.addEventListener("scroll", () => {
   }
 });
 
-const addPostBtnHeader = document.getElementById("add-post-header-btn");
-const addPostModal = document.getElementById("add-post-modal");
-const closeModal = document.getElementById("close-modal");
-const newTitle = document.getElementById("new-title");
-const newText = document.getElementById("new-text");
-const newImg = document.getElementById("new-img");
-const addPostBtn = document.getElementById("add-post-btn");
 
-addPostBtnHeader.addEventListener("click", () => addPostModal.style.display = "flex");
-closeModal.addEventListener("click", () => addPostModal.style.display = "none");
-window.addEventListener("click", (e) => { if(e.target === addPostModal) addPostModal.style.display = "none"; });
+addPostHeaderBtn.addEventListener("click", () => {
+  editingPostId = null;
+  modalTitle.textContent = "Add New Post";
+  savePostBtn.textContent = "Add Post";
+  postTitleInput.value = "";
+  postTextInput.value = "";
+  postImgInput.value = "";
+  postModal.style.display = "flex";
+});
 
-addPostBtn.addEventListener("click", () => {
-  const title = newTitle.value.trim();
-  const text = newText.value.trim();
-  const file = newImg.files[0];
+closeModal.addEventListener("click", () => postModal.style.display = "none");
+window.addEventListener("click", (e) => { if(e.target === postModal) postModal.style.display = "none"; });
+
+
+savePostBtn.addEventListener("click", () => {
+  const title = postTitleInput.value.trim();
+  const text = postTextInput.value.trim();
+  const file = postImgInput.files[0];
   if (!title || !text) return alert("Please enter title and content!");
 
-  const id = Date.now() + Math.floor(Math.random() * 1000);
   let imgURL = "https://via.placeholder.com/550x300?text=No+Image";
   if (file) imgURL = URL.createObjectURL(file);
 
-  const post = { id, title, text, img: imgURL };
-  allPosts.unshift(post);
+  if (editingPostId) {
+  
+    allPosts = allPosts.map(post => {
+      if (post.id === editingPostId) {
+        return { ...post, title, text, img: file ? imgURL : post.img };
+      }
+      return post;
+    });
+  } else {
+    const id = Date.now() + Math.floor(Math.random() * 1000);
+    allPosts.unshift({ id, title, text, img: imgURL, timestamp: Date.now() });
+  }
+
   localStorage.setItem("allPosts", JSON.stringify(allPosts));
-
-  newTitle.value = "";
-  newText.value = "";
-  newImg.value = "";
-  addPostModal.style.display = "none";
-
+  postModal.style.display = "none";
   renderPosts();
 });

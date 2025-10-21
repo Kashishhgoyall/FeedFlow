@@ -155,7 +155,8 @@ main {
   margin-top: 10px;
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .like-btn,
@@ -224,7 +225,7 @@ footer {
   box-shadow: 0 0 8px var(--accent);
 }
 
-/* Modal */
+
 .modal {
   display: none;
   position: fixed;
@@ -266,6 +267,22 @@ footer {
   font-size: 1.2rem;
   font-weight: bold;
 }
+.edit-btn {
+  border: none;
+  padding: 8px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background-color: #d1fae5; 
+  color: #10b981;
+  transition: all 0.2s;
+}
+
+.edit-btn:hover {
+  filter: brightness(0.9);
+  transform: scale(1.03);
+}
 
 
 @media (max-width: 992px) {
@@ -285,3 +302,4 @@ footer {
     height: 180px;
   }
 }
+
